@@ -1,19 +1,36 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { FloatingConcierge } from "@/components/site/FloatingConcierge";
+import { TourCard } from "@/components/site/TourCard";
+import { tours, tourCategories, filterTours } from "@/data/tours";
 
 import heroHighlands from "@/assets/hero-highlands.jpg";
 import destSigiriya from "@/assets/dest-sigiriya.jpg";
 import destGalle from "@/assets/dest-galle.jpg";
-import pkgYala from "@/assets/pkg-yala.jpg";
-import pkgCoast from "@/assets/pkg-coast.jpg";
 import galTea from "@/assets/gal-tea.jpg";
 import galBreakfast from "@/assets/gal-breakfast.jpg";
 import galTemple from "@/assets/gal-temple.jpg";
 import galYacht from "@/assets/gal-yacht.jpg";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Vaya Ceylon — Private Luxury Journeys Through Sri Lanka" },
+      {
+        name: "description",
+        content:
+          "Handcrafted private expeditions across Sri Lanka. Browse curated luxury, wellness, wildlife, honeymoon and family tour packages.",
+      },
+      { property: "og:title", content: "Vaya Ceylon — Private Luxury Journeys Through Sri Lanka" },
+      {
+        property: "og:description",
+        content: "Curated multi-day private tours across the teardrop isle.",
+      },
+      { property: "og:type", content: "website" },
+    ],
+  }),
   component: Home,
 });
 
@@ -21,7 +38,7 @@ const pillars = [
   {
     tone: "jungle",
     title: "Handpicked Sanctuaries",
-    body: "From Geoffrey Bawa villas to boutique tea bungalows, we only partner with properties that embody the soul of the island.",
+    body: "From Geoffrey Bawa villas to boutique tea bungalows, only properties that embody the soul of the island.",
   },
   {
     tone: "ocean",
@@ -31,34 +48,7 @@ const pillars = [
   {
     tone: "sunset",
     title: "Seamless Transit",
-    body: "Private chauffeur-guides and exclusive air transfers keep your focus on the landscape, not the logistics.",
-  },
-];
-
-const packages = [
-  {
-    slug: "cultural-triangle-and-coast",
-    img: pkgYala,
-    tagTone: "text-sunset",
-    tag: "12 Days · Wild & Wellness",
-    title: "The Wild Heart & Sacred Soul",
-    price: "$8,400",
-  },
-  {
-    slug: "cultural-triangle-and-coast",
-    img: pkgCoast,
-    tagTone: "text-jungle",
-    tag: "9 Days · Coastal Escape",
-    title: "Golden Shores & Galle Fort",
-    price: "$6,200",
-  },
-  {
-    slug: "cultural-triangle-and-coast",
-    img: destSigiriya,
-    tagTone: "text-paper/60",
-    tag: "10 Days · Heritage",
-    title: "The Ancient Triangle",
-    price: "$7,100",
+    body: "Private chauffeur-guides and exclusive air transfers keep your focus on the landscape.",
   },
 ];
 
@@ -81,23 +71,24 @@ const destinations = [
 ];
 
 function Home() {
+  const [activeCat, setActiveCat] = useState<string>("All");
+  const visibleTours = filterTours(activeCat).slice(0, 6);
+
   return (
     <main className="bg-paper text-ink font-sans selection:bg-sunset/30 overflow-x-hidden">
       <SiteNav />
 
-      {/* HERO */}
-      <section className="relative h-screen w-full flex items-center justify-center pt-20">
-        <div className="absolute inset-0 px-4 md:px-8 py-4 md:py-8">
-          <div className="relative w-full h-full rounded-[2rem] overflow-hidden">
-            <img
-              src={heroHighlands}
-              alt="Misty tea plantations at dawn in Sri Lanka"
-              className="w-full h-full object-cover"
-              width={1920}
-              height={1200}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-ink/20" />
-          </div>
+      {/* HERO — full bleed, edge to edge */}
+      <section className="relative min-h-screen w-full flex items-center justify-center">
+        <div className="absolute inset-0">
+          <img
+            src={heroHighlands}
+            alt="Misty tea plantations at dawn in Sri Lanka"
+            className="w-full h-full object-cover"
+            width={1920}
+            height={1200}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-ink/50 via-ink/20 to-ink/60" />
         </div>
 
         <div className="relative z-10 text-center max-w-4xl px-6 animate-reveal">
@@ -107,47 +98,39 @@ function Home() {
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-paper leading-[0.95] text-balance mb-8">
             Sri Lanka <span className="italic font-light text-sunset">Beyond</span> the Ordinary
           </h1>
-          <p className="text-base md:text-lg text-paper/80 max-w-xl mx-auto font-light leading-relaxed text-pretty">
+          <p className="text-base md:text-lg text-paper/80 max-w-xl mx-auto font-light leading-relaxed text-pretty mb-10">
             Private, handcrafted expeditions through the teardrop isle, designed by those who call
             its emerald hills home.
           </p>
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+            <Link
+              to="/tours"
+              className="px-10 py-4 bg-sunset text-ink font-semibold rounded-full text-[11px] uppercase tracking-[0.22em] hover:scale-[1.03] transition-transform shadow-lift"
+            >
+              Explore Tours
+            </Link>
+            <a
+              href="#packages"
+              className="px-10 py-4 bg-paper/10 backdrop-blur-md border border-paper/30 text-paper rounded-full text-[11px] uppercase tracking-[0.22em] hover:bg-paper hover:text-ink transition-all"
+            >
+              Featured Journeys
+            </a>
+          </div>
         </div>
 
-        {/* Floating planner */}
-        <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-full max-w-5xl px-4 md:px-8 z-20 animate-reveal [animation-delay:400ms]">
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            className="bg-paper/95 backdrop-blur-xl ring-1 ring-ink/5 p-6 md:p-8 rounded-2xl shadow-lift grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_auto] gap-6 items-end"
-          >
-            {[
-              { label: "Destination", options: ["Cultural Triangle", "Southern Coast", "Hill Country", "Wild Yala"] },
-              { label: "Travel Style", options: ["Heritage & Wellness", "Wildlife & Safari", "Private Honeymoon", "Family Adventure"] },
-              { label: "Season", options: ["Dec – Mar", "Apr – Jun", "Jul – Sep", "Oct – Nov"] },
-            ].map((f) => (
-              <label key={f.label} className="block space-y-2 min-w-0">
-                <span className="text-[10px] uppercase tracking-[0.22em] text-ink/50 block ml-1 font-semibold">
-                  {f.label}
-                </span>
-                <select className="w-full bg-transparent border-b border-ink/15 py-2 text-sm focus:outline-none focus:border-ocean transition-colors">
-                  {f.options.map((o) => (
-                    <option key={o}>{o}</option>
-                  ))}
-                </select>
-              </label>
-            ))}
-            <button
-              type="submit"
-              className="w-full md:w-auto px-8 py-4 bg-sunset text-ink font-medium text-sm rounded-lg hover:brightness-95 transition-all shadow-md shadow-sunset/20 whitespace-nowrap"
-            >
-              Personalize Itinerary
-            </button>
-          </form>
-        </div>
+        <a
+          href="#packages"
+          aria-label="Scroll to tours"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-paper/70 text-[10px] uppercase tracking-[0.3em] flex flex-col items-center gap-3 animate-reveal [animation-delay:600ms]"
+        >
+          <span>Discover</span>
+          <span className="w-px h-10 bg-paper/40" />
+        </a>
       </section>
 
       {/* TRUST BAR */}
-      <section className="pt-40 pb-20 px-6 md:px-10 border-b border-ink/5">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10 text-ink/50">
+      <section className="py-14 px-6 md:px-10 border-b border-ink/5 bg-paper">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-ink/50">
           <span className="text-[10px] uppercase tracking-[0.3em] font-semibold text-ink/70">
             As featured in
           </span>
@@ -159,96 +142,101 @@ function Home() {
         </div>
       </section>
 
-      {/* PILLARS */}
-      <section id="experiences" className="py-28 md:py-36 px-6 md:px-10 max-w-7xl mx-auto">
-        <div className="max-w-2xl mb-16">
-          <span className="text-[11px] uppercase tracking-[0.3em] text-jungle font-semibold mb-4 block">
-            The Vaya Difference
-          </span>
-          <h2 className="font-display text-4xl md:text-5xl leading-tight text-balance">
-            A quieter, more considered way to see Ceylon.
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
-          {pillars.map((p) => (
-            <div key={p.title} className="space-y-6">
-              <div
-                className={`size-12 rounded-full border grid place-items-center ${
-                  p.tone === "jungle"
-                    ? "border-jungle/25 text-jungle"
-                    : p.tone === "ocean"
-                    ? "border-ocean/25 text-ocean"
-                    : "border-sunset/40 text-sunset"
-                }`}
-              >
-                <div
-                  className={`size-2 rounded-full ${
-                    p.tone === "jungle"
-                      ? "bg-jungle"
-                      : p.tone === "ocean"
-                      ? "bg-ocean"
-                      : "bg-sunset"
-                  }`}
-                />
-              </div>
-              <h3 className="font-display text-3xl">{p.title}</h3>
-              <p className="text-ink/60 leading-relaxed text-sm">{p.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* FEATURED PACKAGES */}
-      <section className="py-24 md:py-28 bg-ink text-paper overflow-hidden">
-        <div className="px-6 md:px-10 max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between md:items-end gap-6 mb-16">
-          <div className="max-w-xl">
-            <span className="text-[11px] uppercase tracking-[0.3em] text-sunset font-semibold mb-4 block">
+      {/* PACKAGES — the main event */}
+      <section id="packages" className="py-24 md:py-32 px-6 md:px-10 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+          <div className="max-w-2xl">
+            <span className="text-[11px] uppercase tracking-[0.3em] text-jungle font-semibold mb-4 block">
               Signature Journeys
             </span>
-            <h2 className="font-display text-4xl md:text-5xl leading-tight">
-              Masterfully paced itineraries.
+            <h2 className="font-display text-4xl md:text-5xl leading-tight text-balance">
+              Curated tour packages across the island.
             </h2>
+            <p className="mt-6 text-ink/60 max-w-lg leading-relaxed">
+              Every itinerary is private, considered and fully customisable — from cultural
+              immersions to leopard safaris and honeymoon sanctuaries.
+            </p>
           </div>
           <Link
-            to="/tours/$slug"
-            params={{ slug: "cultural-triangle-and-coast" }}
-            className="text-[11px] uppercase tracking-[0.22em] border-b border-paper/25 pb-1 hover:border-sunset hover:text-sunset transition-colors self-start md:self-auto"
+            to="/tours"
+            className="text-[11px] uppercase tracking-[0.22em] border-b border-ink/25 pb-1 hover:border-sunset hover:text-sunset transition-colors self-start md:self-auto whitespace-nowrap"
           >
-            View All Collections
+            View All {tours.length} Tours →
           </Link>
         </div>
 
-        <div className="flex gap-6 md:gap-8 px-6 md:px-10 overflow-x-auto pb-8 snap-x no-scrollbar">
-          {packages.map((p, i) => (
-            <Link
-              key={i}
-              to="/tours/$slug"
-              params={{ slug: p.slug }}
-              className="flex-none w-[320px] md:w-[440px] snap-center group"
+        {/* Category filters */}
+        <div className="flex flex-wrap gap-2 mb-12">
+          {tourCategories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCat(cat)}
+              className={`px-5 py-2.5 text-[11px] uppercase tracking-[0.2em] font-semibold rounded-full transition-all border ${
+                activeCat === cat
+                  ? "bg-ink text-paper border-ink"
+                  : "bg-transparent text-ink/70 border-ink/15 hover:border-ink/40"
+              }`}
             >
-              <div className="aspect-[4/5] overflow-hidden rounded-2xl mb-5 bg-paper/5">
-                <img
-                  src={p.img}
-                  alt={p.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                />
-              </div>
-              <div className="flex justify-between items-start gap-4">
-                <div className="min-w-0">
-                  <span
-                    className={`text-[10px] uppercase tracking-[0.22em] font-semibold block mb-2 ${p.tagTone}`}
-                  >
-                    {p.tag}
-                  </span>
-                  <h4 className="font-display text-2xl md:text-3xl truncate">{p.title}</h4>
-                </div>
-                <span className="font-display text-xl md:text-2xl shrink-0">
-                  {p.price} <span className="text-xs text-paper/40 font-sans italic">pp</span>
-                </span>
-              </div>
-            </Link>
+              {cat}
+            </button>
           ))}
+        </div>
+
+        {/* Grid */}
+        {visibleTours.length ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {visibleTours.map((t) => (
+              <TourCard key={t.slug} tour={t} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-ink/50 py-16">No tours in this category yet.</p>
+        )}
+
+        <div className="text-center mt-14">
+          <Link
+            to="/tours"
+            className="inline-block px-10 py-4 bg-ocean text-paper rounded-full text-[11px] uppercase tracking-[0.22em] font-semibold hover:bg-ink transition-colors"
+          >
+            Browse All Tours
+          </Link>
+        </div>
+      </section>
+
+      {/* PILLARS */}
+      <section id="about" className="py-24 md:py-32 px-6 md:px-10 bg-secondary">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-2xl mb-16">
+            <span className="text-[11px] uppercase tracking-[0.3em] text-jungle font-semibold mb-4 block">
+              The Vaya Difference
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl leading-tight text-balance">
+              A quieter, more considered way to see Ceylon.
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
+            {pillars.map((p) => (
+              <div key={p.title} className="space-y-6">
+                <div
+                  className={`size-12 rounded-full border grid place-items-center ${
+                    p.tone === "jungle"
+                      ? "border-jungle/25 text-jungle"
+                      : p.tone === "ocean"
+                      ? "border-ocean/25 text-ocean"
+                      : "border-sunset/40 text-sunset"
+                  }`}
+                >
+                  <div
+                    className={`size-2 rounded-full ${
+                      p.tone === "jungle" ? "bg-jungle" : p.tone === "ocean" ? "bg-ocean" : "bg-sunset"
+                    }`}
+                  />
+                </div>
+                <h3 className="font-display text-3xl">{p.title}</h3>
+                <p className="text-ink/60 leading-relaxed text-sm">{p.body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -290,7 +278,7 @@ function Home() {
       </section>
 
       {/* GALLERY */}
-      <section id="journal" className="py-20 md:py-24 bg-paper">
+      <section className="py-20 md:py-24 bg-paper">
         <div className="max-w-7xl mx-auto px-6 md:px-10 mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
             <span className="text-[11px] uppercase tracking-[0.3em] text-jungle font-semibold mb-3 block">
@@ -320,7 +308,7 @@ function Home() {
       </section>
 
       {/* FINAL CTA */}
-      <section id="plan" className="py-32 md:py-48 px-6 md:px-10 text-center bg-ocean text-paper">
+      <section id="contact" className="py-32 md:py-48 px-6 md:px-10 text-center bg-ocean text-paper">
         <div className="max-w-3xl mx-auto">
           <span className="text-[11px] uppercase tracking-[0.35em] text-sunset font-medium mb-8 block">
             Begin your consultation
@@ -332,13 +320,20 @@ function Home() {
           <p className="text-paper/70 mb-12 text-base md:text-lg max-w-xl mx-auto">
             Allow our consultants to craft a journey as unique as your own signature.
           </p>
-          <Link
-            to="/tours/$slug"
-            params={{ slug: "cultural-triangle-and-coast" }}
-            className="inline-block px-12 py-5 bg-sunset text-ink font-semibold rounded-full hover:scale-[1.03] transition-transform text-sm tracking-widest uppercase"
-          >
-            Start Private Consultation
-          </Link>
+          <div id="plan" className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/tours"
+              className="inline-block px-12 py-5 bg-sunset text-ink font-semibold rounded-full hover:scale-[1.03] transition-transform text-sm tracking-widest uppercase"
+            >
+              Explore Tours
+            </Link>
+            <a
+              href="mailto:concierge@vayaceylon.com"
+              className="inline-block px-12 py-5 bg-transparent border border-paper/30 text-paper rounded-full hover:bg-paper hover:text-ink transition-colors text-sm tracking-widest uppercase"
+            >
+              Speak to a Specialist
+            </a>
+          </div>
           <div className="mt-16 flex flex-wrap justify-center gap-8 md:gap-12 text-[10px] uppercase tracking-[0.25em] font-medium text-paper/50">
             <span>WhatsApp Concierge</span>
             <span>+94 11 234 5678</span>
