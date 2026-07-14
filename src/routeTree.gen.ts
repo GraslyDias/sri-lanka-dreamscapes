@@ -9,10 +9,31 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToursIndexRouteImport } from './routes/tours.index'
+import { Route as DestinationsIndexRouteImport } from './routes/destinations.index'
 import { Route as ToursSlugRouteImport } from './routes/tours.$slug'
+import { Route as DestinationsSlugRouteImport } from './routes/destinations.$slug'
+import { Route as CheckoutIdRouteImport } from './routes/checkout.$id'
 
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -23,44 +44,132 @@ const ToursIndexRoute = ToursIndexRouteImport.update({
   path: '/tours/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DestinationsIndexRoute = DestinationsIndexRouteImport.update({
+  id: '/destinations/',
+  path: '/destinations/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ToursSlugRoute = ToursSlugRouteImport.update({
   id: '/tours/$slug',
   path: '/tours/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DestinationsSlugRoute = DestinationsSlugRouteImport.update({
+  id: '/destinations/$slug',
+  path: '/destinations/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutIdRoute = CheckoutIdRouteImport.update({
+  id: '/checkout/$id',
+  path: '/checkout/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/contact': typeof ContactRoute
+  '/checkout/$id': typeof CheckoutIdRoute
+  '/destinations/$slug': typeof DestinationsSlugRoute
   '/tours/$slug': typeof ToursSlugRoute
+  '/destinations/': typeof DestinationsIndexRoute
   '/tours/': typeof ToursIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/contact': typeof ContactRoute
+  '/checkout/$id': typeof CheckoutIdRoute
+  '/destinations/$slug': typeof DestinationsSlugRoute
   '/tours/$slug': typeof ToursSlugRoute
+  '/destinations': typeof DestinationsIndexRoute
   '/tours': typeof ToursIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/contact': typeof ContactRoute
+  '/checkout/$id': typeof CheckoutIdRoute
+  '/destinations/$slug': typeof DestinationsSlugRoute
   '/tours/$slug': typeof ToursSlugRoute
+  '/destinations/': typeof DestinationsIndexRoute
   '/tours/': typeof ToursIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/tours/$slug' | '/tours/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/contact'
+    | '/checkout/$id'
+    | '/destinations/$slug'
+    | '/tours/$slug'
+    | '/destinations/'
+    | '/tours/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tours/$slug' | '/tours'
-  id: '__root__' | '/' | '/tours/$slug' | '/tours/'
+  to:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/contact'
+    | '/checkout/$id'
+    | '/destinations/$slug'
+    | '/tours/$slug'
+    | '/destinations'
+    | '/tours'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/contact'
+    | '/checkout/$id'
+    | '/destinations/$slug'
+    | '/tours/$slug'
+    | '/destinations/'
+    | '/tours/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
+  ContactRoute: typeof ContactRoute
+  CheckoutIdRoute: typeof CheckoutIdRoute
+  DestinationsSlugRoute: typeof DestinationsSlugRoute
   ToursSlugRoute: typeof ToursSlugRoute
+  DestinationsIndexRoute: typeof DestinationsIndexRoute
   ToursIndexRoute: typeof ToursIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -75,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToursIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/destinations/': {
+      id: '/destinations/'
+      path: '/destinations'
+      fullPath: '/destinations/'
+      preLoaderRoute: typeof DestinationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tours/$slug': {
       id: '/tours/$slug'
       path: '/tours/$slug'
@@ -82,14 +198,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToursSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/destinations/$slug': {
+      id: '/destinations/$slug'
+      path: '/destinations/$slug'
+      fullPath: '/destinations/$slug'
+      preLoaderRoute: typeof DestinationsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/$id': {
+      id: '/checkout/$id'
+      path: '/checkout/$id'
+      fullPath: '/checkout/$id'
+      preLoaderRoute: typeof CheckoutIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
+  ContactRoute: ContactRoute,
+  CheckoutIdRoute: CheckoutIdRoute,
+  DestinationsSlugRoute: DestinationsSlugRoute,
   ToursSlugRoute: ToursSlugRoute,
+  DestinationsIndexRoute: DestinationsIndexRoute,
   ToursIndexRoute: ToursIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

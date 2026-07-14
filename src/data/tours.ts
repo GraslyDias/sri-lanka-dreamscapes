@@ -65,6 +65,7 @@ export type Tour = {
   shortDescription: string;
   longDescription: string;
   googleMapsEmbedUrl: string;
+  googleMapsLink?: string;
   routeDistanceKm: number;
   inclusions: string[];
   exclusions: string[];
@@ -410,7 +411,8 @@ export const tours: Tour[] = [
       "A focused immersion in the island's UNESCO heritage — 2,500 years of civilisation in six days.",
     longDescription:
       "The Cultural Triangle draws a line between three ancient capitals and the sacred city of Kandy. Curated with private access and specialist guides.",
-    googleMapsEmbedUrl: slEmbed,
+    googleMapsEmbedUrl: "https://maps.google.com/maps?saddr=Polonnaruwa&daddr=Anuradhapura+to:Sigiriya+to:Dambulla+to:Kandy&output=embed",
+    googleMapsLink: "https://www.google.com/maps/dir/Polonnaruwa/Anuradhapura/Sigiriya/Dambulla/Kandy/@7.8031468,80.3732275,10z/data=!3m1!4b1!4m37!4m36!1m10!1m1!1s0x3afb44ba3b16ce27:0xc34997a2b3032b7c!2m2!1d81.0001183!2d7.914703!3m4!1m2!1d80.8316737!2d7.80421!3s0x3afb56362408d1ab:0xc1dcf447d29c3c46!1m5!1m1!1s0x3afcf4f99360e159:0xc111fe9ebc6dcf0e!2m2!1d80.4036508!2d8.3113518!1m5!1m1!1s0x3afca15b724c9ab3:0xab1771275b370d52!2m2!1d80.760257!2d7.9570327!1m5!1m1!1s0x3afcaff4c8adcc4f:0x67ae3cc5b1536914!2m2!1d80.6510856!2d7.8741017!1m5!1m1!1s0x3ae366266498acd3:0x411a3818a1e03c35!2m2!1d80.6337262!2d7.2905715!3e9!5m1!1e4?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
     routeDistanceKm: 420,
     inclusions: [
       "Private historian-guide",

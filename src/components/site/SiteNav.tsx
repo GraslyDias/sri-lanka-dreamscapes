@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 const NAV_LINKS: { label: string; to: string }[] = [
   { label: "Home", to: "/" },
   { label: "Tours", to: "/tours" },
-  { label: "Destinations", to: "/#destinations" },
-  { label: "About", to: "/#about" },
-  { label: "Contact", to: "/#contact" },
+  { label: "Destinations", to: "/destinations" },
+  { label: "About", to: "/about" },
+  { label: "Contact", to: "/contact" },
 ];
 
 export function SiteNav() {
@@ -24,7 +24,7 @@ export function SiteNav() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-paper/85 backdrop-blur-xl border-b border-ink/5 py-4"
+          ? "bg-paper/90 backdrop-blur-xl border-b border-ink/5 py-4"
           : "bg-gradient-to-b from-ink/40 to-transparent py-5"
       }`}
     >
@@ -43,27 +43,21 @@ export function SiteNav() {
             scrolled ? "text-ink/70" : "text-paper/90"
           }`}
         >
-          {NAV_LINKS.map((link) =>
-            link.to.startsWith("/#") ? (
-              <a key={link.to} href={link.to} className="hover:text-sunset transition-colors">
-                {link.label}
-              </a>
-            ) : (
-              <Link
-                key={link.to}
-                to={link.to}
-                className="hover:text-sunset transition-colors"
-                activeProps={{ className: "text-sunset" }}
-                activeOptions={{ exact: link.to === "/" }}
-              >
-                {link.label}
-              </Link>
-            ),
-          )}
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className="hover:text-sunset transition-colors"
+              activeProps={{ className: "text-sunset" }}
+              activeOptions={{ exact: link.to === "/" }}
+            >
+              {link.label}
+            </Link>
+          ))}
         </div>
 
-        <a
-          href="#plan"
+        <Link
+          to="/contact"
           className={`hidden md:inline-block px-6 py-2.5 text-[11px] uppercase tracking-[0.22em] font-medium transition-all rounded-full ${
             scrolled
               ? "bg-ocean text-paper hover:bg-ink"
@@ -71,7 +65,7 @@ export function SiteNav() {
           }`}
         >
           Plan My Trip
-        </a>
+        </Link>
 
         <button
           onClick={() => setOpen((v) => !v)}
@@ -88,34 +82,25 @@ export function SiteNav() {
 
       {open && (
         <div className="md:hidden bg-paper border-t border-ink/5 px-6 py-6 space-y-4 text-sm">
-          {NAV_LINKS.map((link) =>
-            link.to.startsWith("/#") ? (
-              <a
-                key={link.to}
-                href={link.to}
-                onClick={() => setOpen(false)}
-                className="block text-ink uppercase tracking-[0.22em] text-[11px]"
-              >
-                {link.label}
-              </a>
-            ) : (
-              <Link
-                key={link.to}
-                to={link.to}
-                onClick={() => setOpen(false)}
-                className="block text-ink uppercase tracking-[0.22em] text-[11px]"
-              >
-                {link.label}
-              </Link>
-            ),
-          )}
-          <a
-            href="#plan"
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              onClick={() => setOpen(false)}
+              className="block text-ink uppercase tracking-[0.22em] text-[11px] hover:text-sunset transition-colors"
+              activeProps={{ className: "text-sunset" }}
+              activeOptions={{ exact: link.to === "/" }}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <Link
+            to="/contact"
             onClick={() => setOpen(false)}
             className="block text-center px-6 py-3 bg-ocean text-paper rounded-full text-[11px] uppercase tracking-[0.22em]"
           >
             Plan My Trip
-          </a>
+          </Link>
         </div>
       )}
     </nav>

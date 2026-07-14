@@ -437,7 +437,7 @@ function MapCard({ tour }: { tour: Tour }) {
           <span className="font-display text-lg mt-1 block">{tour.routeDistanceKm} km · {tour.destinations.length} regions</span>
         </div>
         <a
-          href={`https://www.google.com/maps/search/${encodeURIComponent(tour.destinations.join(","))}`}
+          href={tour.googleMapsLink || `https://www.google.com/maps/search/${encodeURIComponent(tour.destinations.join(","))}`}
           target="_blank"
           rel="noreferrer"
           className="text-[10px] uppercase tracking-[0.22em] text-ocean font-semibold"
