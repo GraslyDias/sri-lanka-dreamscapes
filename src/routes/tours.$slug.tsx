@@ -60,7 +60,8 @@ function TourNotFound() {
 }
 
 function TourDetail() {
-  const { tour } = Route.useLoaderData();
+  const data = Route.useLoaderData();
+  const tour: Tour = data.tour;
   const [openDay, setOpenDay] = useState(0);
   const [gLightbox, setGLightbox] = useState<string | null>(null);
 
