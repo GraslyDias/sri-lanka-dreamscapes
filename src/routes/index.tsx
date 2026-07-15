@@ -4,6 +4,7 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { FloatingConcierge } from "@/components/site/FloatingConcierge";
 import { TourCard } from "@/components/site/TourCard";
+import { SriLankaMapSection } from "@/components/site/sri-lanka-map-section";
 import { tours, tourCategories, filterTours } from "@/data/tours";
 import { destinations } from "@/data/destinations";
 
@@ -392,6 +393,9 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── INTERACTIVE MAP SECTION ──────────────────────────── */}
+      <SriLankaMapSection />
 
       {/* ── TESTIMONIALS ──────────────────────────────────────── */}
       <section className="py-24 md:py-32 px-6 md:px-10 bg-ink text-paper">
