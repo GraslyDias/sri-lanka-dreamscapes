@@ -4,6 +4,7 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { FloatingConcierge } from "@/components/site/FloatingConcierge";
 import { destinations, destinationCategories, filterDestinations } from "@/data/destinations";
+import destSigiriya from "@/assets/dest-sigiriya.jpg";
 
 export const Route = createFileRoute("/destinations/")(({
   head: () => ({
@@ -31,16 +32,20 @@ function DestinationsIndex() {
     <main className="bg-paper text-ink font-sans">
       <SiteNav />
 
-      {/* Header */}
-      <section className="pt-32 md:pt-40 pb-16 px-6 md:px-10 bg-gradient-to-b from-secondary to-paper">
-        <div className="max-w-7xl mx-auto">
-          <span className="text-[11px] uppercase tracking-[0.3em] text-ocean font-semibold mb-4 block">
+      {/* Hero Header */}
+      <section className="relative min-h-[55vh] flex items-end">
+        <div className="absolute inset-0">
+          <img src={destSigiriya} alt="Sigiriya Rock Fortress, Sri Lanka" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/35 to-ink/25" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 pb-14 md:pb-20 text-paper w-full">
+          <span className="text-[11px] uppercase tracking-[0.35em] text-sunset font-medium mb-5 block">
             Regions of Ceylon
           </span>
-          <h1 className="font-display text-5xl md:text-7xl leading-[0.95] text-balance mb-6">
-            Islands within <span className="italic text-ocean">the Island</span>.
+          <h1 className="font-display text-5xl md:text-7xl leading-[0.95] text-balance mb-5">
+            Islands within <span className="italic font-light text-sunset">the Island</span>.
           </h1>
-          <p className="text-ink/60 max-w-xl leading-relaxed">
+          <p className="text-paper/75 max-w-xl leading-relaxed font-light">
             Six climates, one small country. From mist-wrapped highlands to leopard-filled savanna
             and colonial forts by the sea.
           </p>

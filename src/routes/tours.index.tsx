@@ -1,11 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { FloatingConcierge } from "@/components/site/FloatingConcierge";
 import { TourCard } from "@/components/site/TourCard";
 import { tours, tourCategories, filterTours, type Tour } from "@/data/tours";
-import { Link } from "@tanstack/react-router";
+import tourHero from "@/assets/tour-hero.jpg";
 
 export const Route = createFileRoute("/tours/")({
   head: () => ({
@@ -70,16 +70,20 @@ function ToursIndex() {
     <main className="bg-paper text-ink font-sans">
       <SiteNav />
 
-      {/* Header */}
-      <section className="pt-32 md:pt-40 pb-12 md:pb-16 px-6 md:px-10 bg-gradient-to-b from-secondary to-paper">
-        <div className="max-w-7xl mx-auto">
-          <span className="text-[11px] uppercase tracking-[0.3em] text-jungle font-semibold mb-4 block">
+      {/* Hero Header */}
+      <section className="relative min-h-[55vh] flex items-end">
+        <div className="absolute inset-0">
+          <img src={tourHero} alt="Luxury Sri Lanka tour experience" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/35 to-ink/25" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 pb-14 md:pb-20 text-paper w-full">
+          <span className="text-[11px] uppercase tracking-[0.35em] text-sunset font-medium mb-5 block">
             All Journeys
           </span>
-          <h1 className="font-display text-5xl md:text-7xl leading-[0.95] text-balance mb-6">
-            Every path through <span className="italic text-ocean">Ceylon</span>.
+          <h1 className="font-display text-5xl md:text-7xl leading-[0.95] text-balance mb-5">
+            Every path through <span className="italic font-light text-sunset">Ceylon</span>.
           </h1>
-          <p className="text-ink/60 max-w-xl leading-relaxed">
+          <p className="text-paper/75 max-w-xl leading-relaxed font-light">
             {tours.length} curated private tour packages — from wildlife expeditions to honeymoon
             sanctuaries. Every journey fully customisable.
           </p>
