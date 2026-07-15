@@ -1,11 +1,10 @@
 import { motion } from "framer-motion";
-import type { ReactNode } from "react";
 
-interface ExperienceCardProps {
+export interface ExperienceCardProps {
   id: string;
   label: string;
-  icon: ReactNode;
-  description: string;
+  subtitle: string;
+  image: string;
   isActive: boolean;
   side: "left" | "right";
   index: number;
@@ -18,8 +17,8 @@ interface ExperienceCardProps {
 export function ExperienceCard({
   id,
   label,
-  icon,
-  description,
+  subtitle,
+  image,
   isActive,
   side,
   index,
@@ -33,70 +32,101 @@ export function ExperienceCard({
       id={`experience-card-${id}`}
       role="button"
       aria-pressed={isActive}
-      aria-label={`${label} — ${description}`}
-      initial={{ opacity: 0, x: side === "left" ? -30 : 30 }}
+      aria-label={`${label} — ${subtitle}`}
+      initial={{ opacity: 0, x: side === "left" ? -24 : 24 }}
       whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.19, 1, 0.22, 1] }}
-      whileHover={{ scale: 1.03 }}
-      whileFocus={{ scale: 1.03 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.19, 1, 0.22, 1] }}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={`
-        relative w-full text-left rounded-2xl px-5 py-4 border transition-all duration-300 cursor-pointer
-        focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
-        ${isActive
-          ? "bg-white border-transparent shadow-[0_8px_32px_-8px_rgba(0,0,0,0.18)] scale-[1.02]"
-          : "bg-white/60 border-[#E5E7EB] hover:bg-white hover:shadow-soft"
-        }
-      `}
-      style={isActive ? { borderColor: accentColor + "33" } as React.CSSProperties : {}}
+      className="relative w-full text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded-[18px]"
+      style={{ focusVisibleRingColor: accentColor } as React.CSSProperties}
     >
-      {/* Active indicator bar */}
-      {isActive && (
+      <motion.div
+        animate={{
+          y: isActive ? -3 : 0,
+          boxShadow: isActive
+            ? "0 20px 48px -12px rgba(0,0,0,0.18), 0 4px 16px -4px rgba(0,0,0,0.08)"
+            : "0 2px 12px -4px rgba(0,0,0,0.08)",
+        }}
+        whileHover={{
+          y: -4,
+          boxShadow: "0 24px 56px -12px rgba(0,0,0,0.16), 0 4px 16px -4px rgba(0,0,0,0.08)",
+        }}
+        transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
+        className="relative flex overflow-hidden rounded-[18px] bg-white"
+        style={{
+          border: isActive ? `1.5px solid ${accentColor}30` : "1.5px solid #EBEBEB",
+          height: 118,
+        }}
+      >
+        {/* Active left accent line */}
         <motion.div
-          layoutId="activeBar"
-          className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full"
-          style={{ backgroundColor: accentColor }}
-          transition={{ type: "spring", stiffness: 400, damping: 30 }}
-        />
-      )}
-
-      <div className="flex items-start gap-4 pl-2">
-        {/* Icon */}
-        <div
-          className="size-10 rounded-xl flex items-center justify-center shrink-0 transition-colors duration-300 text-lg"
-          style={{
-            backgroundColor: isActive ? accentColor + "18" : "#F3F4F6",
-            color: isActive ? accentColor : "#6B7280",
+          className="absolute left-0 top-0 bottom-0 w-[3px] rounded-r-full z-10"
+          animate={{
+            opacity: isActive ? 1 : 0,
+            scaleY: isActive ? 1 : 0.4,
           }}
-        >
-          {icon}
+          transition={{ duration: 0.35 }}
+          style={{ backgroundColor: accentColor, transformOrigin: "center" }}
+        />
+
+        {/* Photo thumbnail — 36% width */}
+        <div className="relative shrink-0 overflow-hidden" style={{ width: "36%" }}>
+          <motion.img
+            src={image}
+            alt={label}
+            className="w-full h-full object-cover"
+            animate={{ scale: isActive ? 1.06 : 1 }}
+            whileHover={{ scale: 1.08 }}
+            transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+          />
+          {/* Warm overlay on inactive state */}
+          <div
+            className="absolute inset-0 transition-opacity duration-400"
+            style={{
+              background: "linear-gradient(to right, rgba(0,0,0,0.0) 60%, rgba(255,255,255,0.18) 100%)",
+              opacity: isActive ? 0 : 0.35,
+            }}
+          />
         </div>
 
-        {/* Text */}
-        <div className="min-w-0 flex-1">
+        {/* Text — 64% width */}
+        <div className="flex flex-col justify-center px-4 flex-1 min-w-0">
           <p
-            className="font-semibold text-sm leading-tight transition-colors duration-300"
-            style={{ color: isActive ? accentColor : "#111827" }}
+            className="font-display text-[15px] leading-tight mb-1.5 transition-colors duration-300"
+            style={{
+              color: isActive ? accentColor : "#1F2937",
+              letterSpacing: "-0.01em",
+            }}
           >
             {label}
           </p>
-          <p className="text-[12px] text-gray-500 mt-1 leading-snug line-clamp-2">
-            {description}
+          <p
+            className="text-[11px] leading-snug transition-colors duration-300"
+            style={{
+              color: isActive ? "#6B7280" : "#9CA3AF",
+              fontFamily: "Inter, sans-serif",
+            }}
+          >
+            {subtitle}
           </p>
-        </div>
 
-        {/* Arrow */}
-        <motion.span
-          className="text-sm transition-colors duration-200 shrink-0 mt-1"
-          style={{ color: isActive ? accentColor : "#D1D5DB" }}
-          animate={{ x: isActive ? 2 : 0 }}
-        >
-          →
-        </motion.span>
-      </div>
+          {/* Subtle arrow */}
+          <motion.span
+            className="mt-2.5 text-[10px] uppercase tracking-[0.2em] font-medium"
+            animate={{
+              opacity: isActive ? 1 : 0,
+              x: isActive ? 0 : -4,
+            }}
+            transition={{ duration: 0.3 }}
+            style={{ color: accentColor }}
+          >
+            Explore →
+          </motion.span>
+        </div>
+      </motion.div>
     </motion.button>
   );
 }
